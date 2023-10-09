@@ -1,7 +1,7 @@
 local M = {}
 
 M.set_background = function(config, backgrounds, bg)
-    config.background = { backgrounds[bg] }
+    config.background = backgrounds[bg]
 
     return config
 end
