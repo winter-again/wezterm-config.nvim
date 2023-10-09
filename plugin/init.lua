@@ -12,13 +12,14 @@ end
 local function simple_override(overrides, name, value)
     if value == 'true' or value == 'false' then
         value = value == 'true' -- convert to bool
-        print('bool')
+        print('value is bool')
     elseif string.match(value, '^%d*%.?%d+$') then
         value = tonumber(value) -- convert to numeric
-        print('numeric')
+        print('value is numeric')
+    else
+        print('value is string')
     end
     overrides[name] = value
-    print('string')
 
     return overrides
 end
