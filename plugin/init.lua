@@ -12,13 +12,13 @@ end
 local function simple_override(overrides, name, value)
     if value == 'true' or value == 'false' then
         value = value == 'true' -- convert to bool
-        wezterm.log_info('bool')
+        wezterm.log_warn('bool')
     elseif string.match(value, '^%d*%.?%d+$') then
         value = tonumber(value) -- convert to numeric
-        wezterm.log_info('numeric')
+        wezterm.log_warn('numeric')
     end
     overrides[name] = value
-    wezterm.log_info('string')
+    wezterm.log_warn('string')
 
     return overrides
 end
@@ -40,6 +40,8 @@ M.user_var_override = function(overrides, name, value, profile_data)
     else
         overrides = simple_override(overrides, name, value)
     end
+
+    wezterm.log_warn('override fired')
 
     return overrides
 end
