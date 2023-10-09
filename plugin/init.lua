@@ -1,9 +1,7 @@
 local M = {}
 
-M.set_background = function(config, choices, bg)
-    config.background = {
-        choices[bg]
-    }
+M.set_background = function(config, backgrounds, bg)
+    config.background = { backgrounds[bg] }
 end
 
 -- we're just trusting that user will specify proper
@@ -20,7 +18,7 @@ local function simple_override(overrides, name, value)
     return overrides
 end
 
-M.user_var_override = function(overrides, name, value, choices)
+M.user_var_override = function(overrides, name, value, profile_data)
     -- to draw a distinction between simple overrides and profile-type
     -- overrides, establish a required naming convention for user variables
     -- and use this to determine whether choices table needs to be utilized?
@@ -30,7 +28,7 @@ M.user_var_override = function(overrides, name, value, choices)
         -- and then use the resulting option
         name = string.gsub(name, 'profile_', '') -- remove the prefix
         if name == 'background' then
-            M.set_background(overrides, choices, value)
+            M.set_background(overrides, profile_data.backgrounds, value)
         end
     else
         overrides = simple_override(overrides, name, value)
