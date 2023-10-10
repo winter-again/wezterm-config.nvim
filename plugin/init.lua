@@ -30,9 +30,9 @@ end
 -- value makes sense for this func
 -- M.override_background = function(overrides, backgrounds, bg)
 local function override_profile(overrides, var, profile_data, sel)
-    overrides[var] = profile_data[var][sel]
     print('var is ' .. var)
     print('sel is ' .. sel)
+    overrides[var] = profile_data[var][sel]
 
     return overrides
 end
