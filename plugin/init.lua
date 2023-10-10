@@ -33,6 +33,8 @@ local function override_profile(overrides, var, profile_data, sel)
     return overrides
 end
 
+-- TODO: add functionality to account for user
+-- not specifying profile_data
 M.override_user_var = function(overrides, name, value, profile_data)
     -- to draw a distinction between simple overrides and profile-type
     -- overrides, establish a required naming convention for user variables

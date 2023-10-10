@@ -1,8 +1,8 @@
 local base64 = require('wezterm-config.base64_encode')
 local M = {}
 
+-- TODO: add some logic to make sure value becomes or is a string?
 function M.set_wezterm_user_var(name, value)
-    -- local bg = opts or M.config.bg
     -- people have asked Wez about stuff like this before, to which he's linked
     -- https://wezfurlong.org/wezterm/recipes/passing-data.html
     -- his suggestions were implemented in this PR
@@ -29,13 +29,6 @@ function M.set_wezterm_user_var(name, value)
         stdout:write(('\x1b]1337;SetUserVar=%s=%s\007'):format(name, value_b64_enc))
     end
     stdout:close()
-end
-
-function M.setup(opts)
-    -- local default_opts = {
-    --     bg = 'bg_1',
-    -- }
-    -- M.config = vim.tbl_deep_extend('force', default_opts, opts or {})
 end
 
 return M
