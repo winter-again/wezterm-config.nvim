@@ -1,3 +1,4 @@
+local base64 = require('wezterm-config.base64_encode')
 local M = {}
 
 function M.set_wezterm_user_var(name, value)
@@ -14,13 +15,17 @@ function M.set_wezterm_user_var(name, value)
     if os.getenv('TMUX') then
         -- also have to set this in tmux conf:
         -- set -g allow-passthrough on
+        -- this assumes user has base64 tool in path
+        -- stdout:write(
+        --     ('\x1bPtmux;\x1b\x1b]1337;SetUserVar=%s=%s\007\x1b\\'):format(name, vim.fn.system({ 'base64' }, value))
+        -- )
+        -- this uses a Lua-only dep
+        local value_b64_enc = base64.encode(value)
         stdout:write(
-            ('\x1bPtmux;\x1b\x1b]1337;SetUserVar=%s=%s\007\x1b\\'):format(name, vim.fn.system({ 'base64' }, value))
+            ('\x1bPtmux;\x1b\x1b]1337;SetUserVar=%s=%s\007\x1b\\'):format(name, value_b64_enc)
         )
     else
-        stdout:write(
-            ('\x1b]1337;SetUserVar=%s=%s\007'):format(name, vim.fn.system({ 'base64' }, value))
-        )
+        stdout:write(('\x1b]1337;SetUserVar=%s=%s\007'):format(name, vim.fn.system({ 'base64' }, value)))
     end
     stdout:close()
 end
