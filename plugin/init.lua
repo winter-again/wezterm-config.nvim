@@ -4,7 +4,6 @@ local M = {}
 -- values for the config variable
 -- if not, then they have to clear the overrides before continuing
 -- to use the plugin
--- M.override_key_val = function(overrides, name, value)
 local function override_key_val(overrides, name, value)
     if value == 'true' or value == 'false' then
         value = value == 'true' -- convert to bool
@@ -25,10 +24,6 @@ end
 -- the wezterm config, which then allows users to pick one of
 -- their profiles as the override
 
--- note that this func doesn't take into account the name of the
--- user var that got set, the only thing that matters is that the 
--- value makes sense for this func
--- M.override_background = function(overrides, backgrounds, bg)
 local function override_profile(overrides, var, profile_data, sel)
     -- print('var is ' .. var) -- 'background'
     -- print('sel is ' .. sel) -- 'bg_1'
@@ -37,12 +32,6 @@ local function override_profile(overrides, var, profile_data, sel)
 
     return overrides
 end
-
--- local function override_colors(overrides, color_sets, color_sel)
---     overrides.colors = color_sets[color_sel]
---
---     return overrides
--- end
 
 M.override_user_var = function(overrides, name, value, profile_data)
     -- to draw a distinction between simple overrides and profile-type
