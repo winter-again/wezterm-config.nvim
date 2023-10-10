@@ -29,11 +29,17 @@ end
 -- user var that got set, the only thing that matters is that the 
 -- value makes sense for this func
 -- M.override_background = function(overrides, backgrounds, bg)
-local function override_background(overrides, backgrounds, bg)
-    overrides.background = backgrounds[bg]
+local function override_profile(overrides, var, profile_data, sel)
+    overrides[var] = profile_data[var][sel]
 
     return overrides
 end
+
+-- local function override_colors(overrides, color_sets, color_sel)
+--     overrides.colors = color_sets[color_sel]
+--
+--     return overrides
+-- end
 
 M.override_user_var = function(overrides, name, value, profile_data)
     -- to draw a distinction between simple overrides and profile-type
@@ -45,9 +51,13 @@ M.override_user_var = function(overrides, name, value, profile_data)
         -- there's probably a better way to know which variable-specific override
         -- func to call instead of using series of if statements
         -- need to handle for invalid config_var?
-        if config_var == 'background' then
-            overrides = override_background(overrides, profile_data.backgrounds, value)
-        end
+        -- there's also the expectation that profile_data has the fields ref below
+        -- if config_var == 'background' then
+        --     overrides = override_background(overrides, profile_data.backgrounds, value)
+        -- elseif config_var == 'colors' then
+        --     overrides = override_colors(overrides, profile_data.colors, value)
+        -- end
+        overrides = override_profile(overrides, config_var, profile_data, value)
     else
         overrides = override_key_val(overrides, name, value)
     end
