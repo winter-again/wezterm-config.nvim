@@ -32,7 +32,7 @@ end
 local function override_profile(overrides, var, profile_data, sel)
     print('var is ' .. var) -- 'background'
     print('sel is ' .. sel) -- 'bg_1'
-    print('profile_data is nil ' .. profile_data == nil)
+    print(profile_data == nil)
     overrides[var] = profile_data[var][sel]
 
     return overrides
