@@ -11,7 +11,7 @@ local function override_key_val(overrides, name, value)
     elseif string.match(value, '^%d*%.?%d+$') then
         value = tonumber(value) -- convert to numeric
         -- print('value is numeric')
-    -- else
+        -- else
         -- print('value is string')
     end
     overrides[name] = value

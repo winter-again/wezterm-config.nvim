@@ -18,11 +18,9 @@ function M.set_wezterm_user_var(name, value)
         -- stdout:write(
         --     ('\x1bPtmux;\x1b\x1b]1337;SetUserVar=%s=%s\007\x1b\\'):format(name, vim.fn.system({ 'base64' }, value))
         -- )
-        
+
         -- this uses a Lua-only dep instead of requiring the user to have base64 in their path
-        stdout:write(
-            ('\x1bPtmux;\x1b\x1b]1337;SetUserVar=%s=%s\007\x1b\\'):format(name, value_b64_enc)
-        )
+        stdout:write(('\x1bPtmux;\x1b\x1b]1337;SetUserVar=%s=%s\007\x1b\\'):format(name, value_b64_enc))
     else
         -- stdout:write(('\x1b]1337;SetUserVar=%s=%s\007'):format(name, vim.fn.system({ 'base64' }, value)))
         stdout:write(('\x1b]1337;SetUserVar=%s=%s\007'):format(name, value_b64_enc))
