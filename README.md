@@ -2,7 +2,7 @@
 
 Neovim and [Wezterm](https://github.com/wez/wezterm) feel like the perfect match. 
 
-Use this plugin to send Wezterm config overrides from within Neovim. This repo doubles as the source of both the Neovim plugin (`lua/wezterm-config`) and the Wezterm plugin (`plugin/`). Wezterm is extremely flexible and a joy to use, but I've still had to employ some pretty hacky solutions and make very opinionated choices here to tie the Neovim and Wezterm sides together. Because of this, the plugin is still a WIP. 
+Use this plugin to send Wezterm config overrides from within Neovim. This repo doubles as the source of both the Neovim plugin (`lua/wezterm-config`) and the Wezterm plugin (`plugin/`). Wezterm is extremely flexible and a joy to use, but I've still had to employ some pretty hacky solutions and make very opinionated choices here to tie the Neovim and Wezterm sides together. Because of this, the plugin is still a WIP, but I don't see most of the core functionality changing unless Wezterm changes a lot. 
 
 Below are instructions and suggestions for setting both pieces up.
 
