@@ -63,17 +63,19 @@ vim.keymap.set('n', '<leader><leader>f', ':lua require("wezterm-config").set_wez
 
 For the more "complex" config options, the plugin currently only supports `config.colors` and `config.background`. For these overrides to work, you need to first follow two conventions. For the sake of clarity, here's an example for overriding `config.background`:
 
-1. Specify a collection of pre-defined "profile" data in your Wezterm config directory. For example, create `~/.config/wezterm/profile_data.lua`. Here, each element of the `background` table can be thought of as a background "profile" that you can set from Neovim:
+1. Specify a collection of pre-defined "profile" data in your Wezterm config directory. For example, create `~/.config/wezterm/profile_data.lua`. Here, each element of the `background` table can be thought of as a background "profile" that you can set from Neovim. You can reference Wezterm's [docs](https://wezfurlong.org/wezterm/config/lua/config/background.html) to see how each element of `background` emulates what Wezterm's `config.background` expects:
 
 ```lua
 local M = {}
 
 local background = {
     bg_1 = {
-        source = '...',
-        width = '...',
-        -- additional options
-        -- ...
+        {
+            source = '...',
+            width = '...',
+            -- additional options
+            -- ...
+        },
     },
     -- additional entries
     -- ...
