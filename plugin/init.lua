@@ -43,17 +43,13 @@ end
 ---@param profile_data table
 ---@return table
 function M.override_user_var(overrides, name, value, profile_data)
-    -- TODO: add functionality to account for user
-    -- not specifying profile_data table
-
-    -- to draw a distinction between simple overrides and profile-type
-    -- overrides, establish a required naming convention for certain user variables
-
     if string.match(name, '^profile_') then
         local config_var = string.gsub(name, 'profile_', '') -- remove the prefix
         if check_profile_opt(config_var) then
             overrides = override_profile(overrides, config_var, profile_data, value)
         else
+            -- this gets printed to Wezterm logs at the INFO level
+            -- because print is an alias for wezterm.log_info()
             print('This profile option isn\'t currently supported')
         end
     else

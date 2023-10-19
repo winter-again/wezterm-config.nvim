@@ -5,8 +5,13 @@ local M = {}
 ---@param name string
 ---@param value string
 function M.set_wezterm_user_var(name, value)
-    -- TODO: should we instead auto convert all the args to strings?
-    if type(name) == 'string' and type(value) == 'string' then
+    -- TODO: is it too much to just auto convert to string and send off to Wezterm?
+    if type(name) ~= 'string' then
+        name = tostring(name)
+    end
+    if type(value) ~= 'string' then
+        value = tostring(value)
+    end
         -- people have asked Wez about stuff like this before, to which he's linked
         -- https://wezfurlong.org/wezterm/recipes/passing-data.html
         -- his suggestions were implemented in this PR
@@ -26,9 +31,6 @@ function M.set_wezterm_user_var(name, value)
             stdout:write(('\x1b]1337;SetUserVar=%s=%s\007'):format(name, value_b64_enc))
         end
         stdout:close()
-    else
-        error('set_wezterm_user_var() only takes strings as arguments')
-    end
 end
 
 return M
