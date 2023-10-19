@@ -51,10 +51,12 @@ function M.override_user_var(overrides, name, value, profile_data)
 
     if string.match(name, '^profile_') then
         local config_var = string.gsub(name, 'profile_', '') -- remove the prefix
-        -- print('hello from 1')
-        overrides = override_profile(overrides, config_var, profile_data, value)
+        if check_profile_opt(config_var) then
+            overrides = override_profile(overrides, config_var, profile_data, value)
+        else
+            print('This profile option isn\'t currently supported')
+        end
     else
-        -- print('hello from 2')
         overrides = override_key_val(overrides, name, value)
     end
 
