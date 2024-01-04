@@ -58,7 +58,8 @@ set -g allow-passthrough on
 Simple key-value style (like `config.font_size` or `config.hide_tab_bar_if_only_one_tab`) config overrides should work out-of-the-box. Here's an example of how to override Wezterm's font size from inside of Neovim. Note how the first argument to `require('wezterm-config').set_wezterm_user_var()` exactly matches the corresponding option in [Wezterm's config struct](https://wezfurlong.org/wezterm/config/lua/config/index.html):
 
 ```lua
-vim.keymap.set('n', '<leader><leader>f', ':lua require("wezterm-config").set_wezterm_user_var("font_size", "20")<CR>')
+local wezterm_config = require('wezterm-config')
+vim.keymap.set('n', '<leader><leader>f', function() wezterm_config.set_wezterm_user_var('font_size', '20'))
 ```
 
 For the more "complex" config options, the plugin currently only supports `config.colors` and `config.background`. For these overrides to work, you need to first follow two conventions. For the sake of clarity, here's an example for overriding `config.background`:
