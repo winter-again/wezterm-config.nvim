@@ -45,14 +45,6 @@ wezterm.on('user-var-changed', function(window, pane, name, value)
 end)
 ```
 
-### tmux
-
-The plugin should play nicely with [tmux](https://github.com/tmux/tmux). Add the following to your tmux conf file, [as advised by Wez](https://wezfurlong.org/wezterm/recipes/passing-data.html#user-vars).
-
-```
-set -g allow-passthrough on
-```
-
 ### Putting it all together
 
 Simple key-value style (like `config.font_size` or `config.hide_tab_bar_if_only_one_tab`) config overrides should work out-of-the-box. Here's an example of how to override Wezterm's font size from inside of Neovim. Note how the first argument to `require('wezterm-config').set_wezterm_user_var()` exactly matches the corresponding option in [Wezterm's config struct](https://wezfurlong.org/wezterm/config/lua/config/index.html):
@@ -114,4 +106,12 @@ local override_keymap = {
 }
 
 table.insert(config.keys, override_keymap)
+```
+
+### tmux
+
+The plugin should play nicely with [tmux](https://github.com/tmux/tmux). Add the following to your tmux conf file, [as advised by Wez](https://wezfurlong.org/wezterm/recipes/passing-data.html#user-vars).
+
+```
+set -g allow-passthrough on
 ```
