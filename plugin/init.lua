@@ -23,7 +23,7 @@ local function override_profile(overrides, var, profile_data, sel)
 end
 
 local function check_profile_opt(opt)
-    local sup_opts = { 'colors', 'background' }
+    local sup_opts = { 'colors', 'background', 'font' }
     local is_sup = false
     for _, sup_opt in ipairs(sup_opts) do
         if opt == sup_opt then
@@ -50,7 +50,7 @@ function M.override_user_var(overrides, name, value, profile_data)
         else
             -- this gets printed to Wezterm logs at the INFO level
             -- because print is an alias for wezterm.log_info()
-            print('This profile option isn\'t currently supported')
+            print("This profile option isn't currently supported")
         end
     else
         overrides = override_key_val(overrides, name, value)
