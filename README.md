@@ -54,7 +54,7 @@ local wezterm_config = require('wezterm-config')
 vim.keymap.set('n', '<leader><leader>f', function() wezterm_config.set_wezterm_user_var('font_size', '20'))
 ```
 
-For the more "complex" config options, the plugin currently only supports `config.colors` and `config.background`. For these overrides to work, you need to first follow two conventions. For the sake of clarity, here's an example for overriding `config.background`:
+For the more "complex" config options, see `check_profile_opts` in `plugin/init.lua` to see what's currently supported. For these overrides to work, you need to first follow two conventions. For the sake of clarity, here's an example for overriding `config.background`:
 
 1. Specify a collection of pre-defined "profile" data in your Wezterm config directory. For example, create `~/.config/wezterm/profile_data.lua`. Here, each element of the `background` table can be thought of as a background "profile" that you can set from Neovim. You can reference Wezterm's [docs](https://wezfurlong.org/wezterm/config/lua/config/background.html) to see how each element of `background` emulates what Wezterm's `config.background` expects:
 
