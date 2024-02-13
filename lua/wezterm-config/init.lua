@@ -33,4 +33,21 @@ function M.set_wezterm_user_var(name, value)
     stdout:close()
 end
 
+---Convenience function for getting profile data
+-- function M.get_profile_data()
+--     local profile_data = require(M.config.profile_data_name)
+--     return profile_data
+-- end
+
+---Plugin setup function
+---@param opts table
+function M.setup(opts)
+    -- NOTE: keeping this for future use
+    -- local default_opts = {}
+    -- M.config = vim.tbl_deep_extend('force', default_opts, opts or {})
+    -- vim.fn.stdpath('config') is typically $HOME/.config/nvim
+    local wezterm_config = vim.fn.stdpath('config'):gsub('nvim', 'wezterm')
+    vim.opt.rtp:append(wezterm_config)
+end
+
 return M
