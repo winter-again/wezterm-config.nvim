@@ -18,7 +18,8 @@ Using [folke/lazy.nvim](https://github.com/folke/lazy.nvim)
     config = function()
         -- the setup function will append '$HOME/.config/wezterm' to
         -- the Neovim RTP, meaning you can directly access the profile
-        -- data mentioned below from within Neovim
+        -- data mentioned below from within Neovim if you choose to put
+        -- the profile data file in '$HOME/.config/wezterm/lua/'
         require('wezterm_config').setup()
     end
 }
