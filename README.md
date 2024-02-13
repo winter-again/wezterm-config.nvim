@@ -85,7 +85,21 @@ local profile_data = require('lua.profile_data')
 
 2. When using `require('wezterm-config').set_wezterm_user_var()`, prefix the name of the config option with "profile_". For example, to target `config.background` you'd use "profile_background". Again, using the exact Wezterm config option's name is crucial. The full function call to set Wezterm's background to profile "bg_1" would look like `require('wezterm-config').set_wezterm_user_var("profile_background", "bg_1")`. 
 
-Now, you can define a keymap to trigger this function just like in the key-value case above. 
+Now, you can define a keymap to trigger this function just like in the key-value case above. For example when setting up the plugin with Lazy:
+
+```lua
+{
+    'winter-again/wezterm-config.nvim',
+    config = function()
+        -- modifies RTP
+        require('wezterm_config').setup()
+        -- now that the RTP is modified, can
+        -- use the profile data for whatever scripting within Neovim
+        local profile_data = require('profile_data')
+        vim.keymap.set('n', '<leader><leader>1', function() wezterm_config.set_wezterm_user_var('profile_background', 'bg_1'))
+    end
+}
+```
 
 ## Tips
 
