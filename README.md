@@ -97,7 +97,7 @@ Now, you can define a keymap to trigger this function just like in the key-value
         -- now that the RTP is modified, can
         -- use the profile data for whatever scripting within Neovim
         local profile_data = require('profile_data')
-        vim.keymap.set('n', '<leader><leader>1', function() wezterm_config.set_wezterm_user_var('profile_background', 'bg_1'))
+        vim.keymap.set('n', '<leader><leader>1', function() wezterm_config.set_wezterm_user_var('profile_background', 'bg_1') end)
     end
 }
 ```
