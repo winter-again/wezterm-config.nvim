@@ -5,12 +5,8 @@ local M = {}
 ---@param name string
 ---@param value string
 function M.set_wezterm_user_var(name, value)
-    -- TODO: is it too much to just auto convert to string and send off to Wezterm?
-    if type(name) ~= 'string' then
-        name = tostring(name)
-    end
-    if type(value) ~= 'string' then
-        value = tostring(value)
+    if type(name) ~= 'string' or type(value) ~= 'string' then
+        error('Both user var name and value should be strings')
     end
     -- people have asked Wez about stuff like this before, to which he's linked
     -- https://wezfurlong.org/wezterm/recipes/passing-data.html
