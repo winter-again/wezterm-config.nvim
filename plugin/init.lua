@@ -72,8 +72,8 @@ end
 
 -- TODO: do we know for sure that user var is a string being passed in here?
 --
----interprets the Wezterm user var that got overridden and uses a specific helper
----function to apply overrides to the passed overrides table, for use within
+---Interpret the Wezterm user var that got overridden and use a specific helper
+---function to apply overrides to the passed overrides table; for use within
 ---a callback function in Wezterm config
 ---@param overrides table
 ---@param name string
