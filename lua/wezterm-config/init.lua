@@ -1,13 +1,15 @@
 local base64 = require('wezterm-config.base64_encode')
 local M = {}
 
----sends a Wezterm config override from within Neovim
+---Sends a Wezterm config override from within Neovim
 ---@param name string
 ---@param value string
 function M.set_wezterm_user_var(name, value)
-    if type(name) ~= 'string' or type(value) ~= 'string' then
-        error('Both user var name and value should be strings')
+    -- TODO: add note to README about resetting a user var by passing value = '' ?
+    if type(name) ~= 'string' then
+        error("User var's name should be a string")
     end
+
     -- people have asked Wez about stuff like this before, to which he's linked
     -- https://wezfurlong.org/wezterm/recipes/passing-data.html
     -- his suggestions were implemented in this PR

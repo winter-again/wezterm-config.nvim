@@ -43,6 +43,9 @@ end
 ---@param profile_data table
 ---@return table
 function M.override_user_var(overrides, name, value, profile_data)
+    -- TODO: maybe the simpler way instead of forcing this 'profile_...' stuff
+    -- is to manually check the raw var name to see if it's one of the ones
+    -- that accepts a table and then do diff logic based on that check
     if string.match(name, '^profile_') then
         local config_var = string.gsub(name, 'profile_', '') -- remove the prefix
         if check_profile_opt(config_var) then
