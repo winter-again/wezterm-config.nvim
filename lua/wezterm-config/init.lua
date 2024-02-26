@@ -38,11 +38,12 @@ end
 -- end
 
 ---Plugin setup function
----@param opts table
-function M.setup(opts)
+---@param config table | nil
+function M.setup(config)
     -- NOTE: keeping this for future use
-    -- local default_opts = {}
-    -- M.config = vim.tbl_deep_extend('force', default_opts, opts or {})
+    -- local default_config = {}
+    -- M.config = vim.tbl_deep_extend('force', default_config, config or {})
+
     -- vim.fn.stdpath('config') is typically $HOME/.config/nvim
     local wezterm_config = vim.fn.stdpath('config'):gsub('nvim', 'wezterm')
     vim.opt.rtp:append(wezterm_config)

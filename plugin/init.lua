@@ -4,8 +4,11 @@ local M = {}
 -- we're just trusting that user will specify acceptable
 -- values for the config variable
 -- if not, then they have to clear the overrides before continuing
--- to use the plugin
--- maybe better to not do this manual type coercion
+-- to use the plugin?
+
+---@param overrides table
+---@param name string
+---@param value string
 local function override_key_val(overrides, name, value)
     if value == 'true' or value == 'false' then
         value = value == 'true' -- convert to bool
@@ -67,6 +70,8 @@ local function is_sup_profile(name)
     return false
 end
 
+-- TODO: do we know for sure that user var is a string being passed in here?
+--
 ---interprets the Wezterm user var that got overridden and uses a specific helper
 ---function to apply overrides to the passed overrides table, for use within
 ---a callback function in Wezterm config
