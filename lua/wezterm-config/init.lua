@@ -14,7 +14,7 @@ function M.__test_user_var()
     }
     value = vim.json.encode(value)
     local stdout = vim.loop.new_tty(1, false)
-    local value_b64_enc = base64.encode(value)
+    local value_b64_enc = require('wezterm-config.base64_encode').encode(value)
 
     print('vim.json.encode(value) returns: ' .. value)
     print('b64 encoded version of value: ' .. value_b64_enc)
