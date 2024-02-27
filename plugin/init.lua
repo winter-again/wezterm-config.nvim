@@ -40,7 +40,7 @@ local function check_profile_opt(opt)
     return is_sup
 end
 
----interprets the Wezterm user var that got overridden and uses a specific helper
+---(deprecated) interprets the Wezterm user var that got overridden and uses a specific helper
 ---function to apply overrides to the passed overrides table, for use within
 ---a callback function in Wezterm config
 ---@param overrides table
@@ -72,11 +72,6 @@ end
 ---@param value string
 ---@return table
 function M.override_user_var(overrides, name, value)
-    -- TODO: figure out how to just have one override func
-    -- aka detect whether the value passed is table or something simple
-    -- may have to put some condition on whether json_parse() works on the value?
-    -- or do a check before calling parse func
-
     -- returns tbl if successfully parsed
     -- otherwise it returns 1 (?) so I guess an error code or at least
     -- something with type == 'number'
