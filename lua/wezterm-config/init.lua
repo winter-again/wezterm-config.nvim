@@ -15,36 +15,21 @@ function M.__test_bg_override()
     }
     value = vim.json.encode(value)
 
-    -- NOTE: vim.loop renamed to vim.uv in v0.10
-    -- https://neovim.io/doc/user/news.html
+    local vim_ver_is_ge_v10 = vim.version.ge(vim.version(), { 0, 10, 0 })
     local uv
-    if vim.uv then
-        uv = vim.uv
-    else
-        uv = vim.loop
-    end
-    local stdout = uv.new_tty(1, false)
-
-    -- NOTE: v0.10 also introduces a vim.base64 module
     local base64
-    if vim.base64 then
+    if vim_ver_is_ge_v10 == true then
+        uv = vim.uv
         base64 = vim.base64
     else
+        uv = vim.loop
         base64 = require('wezterm-config.base64_encode')
     end
+    local stdout = uv.new_tty(1, false)
     local value_b64_enc = base64.encode(value)
 
-    -- people have asked Wez about stuff like this before, to which he's linked
-    -- https://wezfurlong.org/wezterm/recipes/passing-data.html
-    -- his suggestions were implemented in this PR
-    -- https://github.com/folke/zen-mode.nvim/pull/61 which itself references a Reddit thread
-    -- https://www.reddit.com/r/neovim/comments/xn1q75/how_to_use_chansend/
-    -- Folke has kindly allowed me to adapt the code here
     local esc_seq
     if os.getenv('TMUX') then
-        -- unclear to me why using \033 isn't interpreted the same as \x1b
-        -- there are some files in nvim that seem like they could explain or have
-        -- something to do with nvim-specific interpretation, but I don't understand them
         esc_seq = '\x1bPtmux;\x1b\x1b]1337;SetUserVar=%s=%s\007\x1b\\'
     else
         esc_seq = '\x1b]1337;SetUserVar=%s=%s\007'
@@ -75,23 +60,19 @@ function M.set_wezterm_user_var(name, value)
         -- value = string.gsub(value, '[%[%]]', '')
     end
 
-    -- NOTE: vim.loop renamed to vim.uv in v0.10
+    -- NOTE: v0.10 renames vim.loop to vim.uv and vim.base64 module is added
     -- https://neovim.io/doc/user/news.html
+    local vim_ver_is_ge_v10 = vim.version.ge(vim.version(), { 0, 10, 0 })
     local uv
-    if vim.uv then
-        uv = vim.uv
-    else
-        uv = vim.loop
-    end
-    local stdout = uv.new_tty(1, false)
-
-    -- NOTE: v0.10 also introduces a vim.base64 module
     local base64
-    if vim.base64 then
+    if vim_ver_is_ge_v10 == true then
+        uv = vim.uv
         base64 = vim.base64
     else
+        uv = vim.loop
         base64 = require('wezterm-config.base64_encode')
     end
+    local stdout = uv.new_tty(1, false)
     local value_b64_enc = base64.encode(value)
 
     -- people have asked Wez about stuff like this before, to which he's linked
