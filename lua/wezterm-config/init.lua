@@ -1,6 +1,7 @@
 local M = {}
 
-function M.__test_user_var()
+---For testing purposes only
+function M.__test_bg_override()
     local name = 'background'
     local value = {
         {
