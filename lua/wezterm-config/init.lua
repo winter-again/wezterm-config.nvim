@@ -62,10 +62,10 @@ function M.set_wezterm_user_var(name, value)
 
     -- NOTE: v0.10 renames vim.loop to vim.uv and vim.base64 module is added
     -- https://neovim.io/doc/user/news.html
-    local vim_ver_is_ge_v10 = vim.version.ge(vim.version(), { 0, 10, 0 })
+    local vim_ver_ge_v0_10 = vim.version.ge(vim.version(), { 0, 10, 0 })
     local uv
     local base64
-    if vim_ver_is_ge_v10 == true then
+    if vim_ver_ge_v0_10 == true then
         uv = vim.uv
         base64 = vim.base64
     else
