@@ -15,14 +15,26 @@ function M.__test_bg_override()
     }
     value = vim.json.encode(value)
 
-    local vim_ver_is_ge_v10 = vim.version.ge(vim.version(), { 0, 10, 0 })
+    -- local vim_ver_ge_v0_10 = vim.version.ge(vim.version(), { 0, 10, 0 })
     local uv
     local base64
-    if vim_ver_is_ge_v10 == true then
+    -- if vim_ver_ge_v0_10 == true then
+    --     uv = vim.uv
+    --     base64 = vim.base64
+    -- else
+    --     uv = vim.loop
+    --     base64 = require('wezterm-config.base64_encode')
+    -- end
+
+    if vim.uv then
         uv = vim.uv
-        base64 = vim.base64
     else
         uv = vim.loop
+    end
+
+    if vim.base64 then
+        base64 = vim.base64
+    else
         base64 = require('wezterm-config.base64_encode')
     end
     local stdout = uv.new_tty(1, false)
@@ -60,16 +72,30 @@ function M.set_wezterm_user_var(name, value)
         -- value = string.gsub(value, '[%[%]]', '')
     end
 
+    -- NOTE: v0.10 adds vim.version.ge() and vim.version.le() so shouldn't use it yet since v0.10 isn't out
     -- NOTE: v0.10 renames vim.loop to vim.uv and vim.base64 module is added
     -- https://neovim.io/doc/user/news.html
-    local vim_ver_ge_v0_10 = vim.version.ge(vim.version(), { 0, 10, 0 })
+
+    -- local vim_ver_ge_v0_10 = vim.version.ge(vim.version(), { 0, 10, 0 })
     local uv
     local base64
-    if vim_ver_ge_v0_10 == true then
+    -- if vim_ver_ge_v0_10 == true then
+    --     uv = vim.uv
+    --     base64 = vim.base64
+    -- else
+    --     uv = vim.loop
+    --     base64 = require('wezterm-config.base64_encode')
+    -- end
+
+    if vim.uv then
         uv = vim.uv
-        base64 = vim.base64
     else
         uv = vim.loop
+    end
+
+    if vim.base64 then
+        base64 = vim.base64
+    else
         base64 = require('wezterm-config.base64_encode')
     end
     local stdout = uv.new_tty(1, false)
