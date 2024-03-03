@@ -75,7 +75,6 @@ function M.set_wezterm_user_var(name, value)
     -- NOTE: v0.10 adds vim.version.ge() and vim.version.le() so shouldn't use it yet since v0.10 isn't out
     -- NOTE: v0.10 renames vim.loop to vim.uv and vim.base64 module is added
     -- https://neovim.io/doc/user/news.html
-
     -- local vim_ver_ge_v0_10 = vim.version.ge(vim.version(), { 0, 10, 0 })
     local uv
     local base64
@@ -87,17 +86,26 @@ function M.set_wezterm_user_var(name, value)
     --     base64 = require('wezterm-config.base64_encode')
     -- end
 
-    if vim.uv then
-        uv = vim.uv
-    else
-        uv = vim.loop
-    end
+    -- if vim.uv then
+    --     uv = vim.uv
+    -- else
+    --     uv = vim.loop
+    -- end
+    --
+    -- if vim.base64 then
+    --     base64 = vim.base64
+    -- else
+    --     base64 = require('wezterm-config.base64_encode')
+    -- end
 
-    if vim.base64 then
+    if vim.version().minor >= 10 then
+        uv = vim.uv
         base64 = vim.base64
     else
+        uv = vim.loop
         base64 = require('wezterm-config.base64_encode')
     end
+
     local stdout = uv.new_tty(1, false)
     local value_b64_enc = base64.encode(value)
 
