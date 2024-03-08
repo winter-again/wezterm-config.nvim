@@ -41,7 +41,7 @@ local wezterm_config_nvim = wezterm.plugin.require('https://github.com/winter-ag
 -- rest of your config
 ```
 
-Crucially, add this snippet so that Wezterm will know how to respond to the config overrides that the Neovim side will send. More info on what `profile_data` is later:
+Crucially, add this snippet so that Wezterm will know how to respond to the config overrides that the Neovim side will send:
 
 ```lua
 wezterm.on('user-var-changed', function(window, pane, name, value)
@@ -58,7 +58,9 @@ Simple key-value style (like `config.font_size` or `config.hide_tab_bar_if_only_
 ```lua
 -- in Neovim
 local wezterm_config = require('wezterm-config')
-vim.keymap.set('n', '<leader><leader>f', function() wezterm_config.set_wezterm_user_var('font_size', '20') end)
+vim.keymap.set('n', '<leader><leader>f', function()
+    wezterm_config.set_wezterm_user_var('font_size', '20')
+end)
 ```
 
 For the more "complex" config options that take Lua tables as their values, the process is similar. To give an idea of what's possible, here's an example for overriding `config.background`:
