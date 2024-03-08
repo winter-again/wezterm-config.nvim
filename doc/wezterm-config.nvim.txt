@@ -1,0 +1,187 @@
+*wezterm-config.nvim.txt*      For NVIM v0.8.0      Last change: 2024 March 08
+
+==============================================================================
+Table of Contents                      *wezterm-config.nvim-table-of-contents*
+
+1. wezterm-config.nvim               |wezterm-config.nvim-wezterm-config.nvim|
+  - Installation and use|wezterm-config.nvim-wezterm-config.nvim-installation-and-use|
+  - Tips                        |wezterm-config.nvim-wezterm-config.nvim-tips|
+
+==============================================================================
+1. wezterm-config.nvim               *wezterm-config.nvim-wezterm-config.nvim*
+
+
+  [!NOTE] I’ve made some breaking changes to the plugin. Notably, the plugin is
+  now capable of sending raw Lua tables to Wezterm to override config options
+  like the background. You no longer need to create a special Lua module and
+  append "profile_" to the user var name. Read the instructions below to update
+  your setup.
+Neovim and Wezterm <https://github.com/wez/wezterm> feel like the perfect
+match.
+
+Use this plugin to send Wezterm config overrides from within Neovim. This repo
+doubles as the source of both the Neovim plugin (`lua/wezterm-config/`) and the
+Wezterm plugin (`plugin/`).
+
+Below are instructions and suggestions for setting both pieces up.
+
+
+INSTALLATION AND USE*wezterm-config.nvim-wezterm-config.nvim-installation-and-use*
+
+
+NEOVIM ~
+
+Using folke/lazy.nvim <https://github.com/folke/lazy.nvim>
+
+>lua
+    {
+        'winter-again/wezterm-config.nvim',
+        config = function()
+            -- changing this to true means the plugin will try to append
+            -- $HOME/.config/wezterm' to your RTP, meaning you can more conveniently
+            -- access modules in $HOME/.config/wezterm/lua/ for using with this plugin
+            -- otherwise, store data where you want
+            require('wezterm_config').setup({
+                -- defaults:
+                append_wezterm_to_rtp = false,
+            })
+        end
+    }
+<
+
+
+WEZTERM ~
+
+Wezterm has a built-in system for incorporating remote plugins
+<https://github.com/wez/wezterm/commit/e4ae8a844d8feaa43e1de34c5cc8b4f07ce525dd>.
+Place the following in your Wezterm config file to get the Wezterm side of the
+plugin running. This will pull down the repo into your local Wezterm plugin
+directory.
+
+>lua
+    local wezterm = require('wezterm')
+    local wezterm_config_nvim = wezterm.plugin.require('https://github.com/winter-again/wezterm-config.nvim')
+    -- rest of your config
+<
+
+Crucially, add this snippet so that Wezterm will know how to respond to the
+config overrides that the Neovim side will send:
+
+>lua
+    wezterm.on('user-var-changed', function(window, pane, name, value)
+        local overrides = window:get_config_overrides() or {}
+        overrides = wezterm_config_nvim.override_user_var(overrides, name, value)
+        window:set_config_overrides(overrides)
+    end)
+<
+
+
+PUTTING IT ALL TOGETHER ~
+
+Simple key-value style (like `config.font_size` or
+`config.hide_tab_bar_if_only_one_tab`) config overrides should work
+out-of-the-box. Here’s an example of how to override Wezterm’s font size
+from inside of Neovim. Note how the first argument to
+`require('wezterm-config').set_wezterm_user_var()` is simply the name of the
+corresponding config option in Wezterm’s config struct
+<https://wezfurlong.org/wezterm/config/lua/config/index.html>:
+
+>lua
+    -- in Neovim
+    local wezterm_config = require('wezterm-config')
+    vim.keymap.set('n', '<leader><leader>f', function()
+        wezterm_config.set_wezterm_user_var('font_size', '20')
+    end)
+<
+
+For the more "complex" config options that take Lua tables as their values, the
+process is similar. To give an idea of what’s possible, here’s an example
+for overriding `config.background`:
+
+1. For convenience, create a collection of pre-defined "profile" data (just a Lua module). You can do something like `~/.config/wezterm/lua/profile_data.lua` and set the plugin option of `append_wezterm_to_rtp = true` if you want to keep all of your Wezterm-related stuff outside of your Neovim config. Otherwise, place it in your Neovim RTP. In this file, each element of `M.background` is a table that you’re telling Wezterm to reference when setting the background config option. You can reference Wezterm’s docs <https://wezfurlong.org/wezterm/config/lua/config/background.html> to see how each _element_ of `M.background` emulates what Wezterm’s `config.background` expects.
+
+>lua
+    local M = {}
+    
+    M.background = {
+        bg_1 = {
+            {
+                source = {
+                    File = '...',
+                },
+                width = '...',
+                -- ...
+            },
+        },
+        -- ...
+    }
+    
+    return M
+<
+
+1. Now when configuring the Neovim plugin, you can do something like this to set Wezterm’s background to `M.background.bg_1` with a keymap.
+
+>lua
+    {
+        'winter-again/wezterm-config.nvim',
+        config = function()
+            require('wezterm_config').setup({
+                append_wezterm_to_rtp = true,
+            })
+            local profile_data = require('profile_data') -- this is ~/.config/wezterm/lua/profile_data.lua
+            vim.keymap.set('n', '<leader><leader>1', function()
+                wezterm_config.set_wezterm_user_var('background', profile_data.background.bg_1)
+            end)
+        end
+    }
+<
+
+
+TIPS                            *wezterm-config.nvim-wezterm-config.nvim-tips*
+
+You can use Wezterm’s built-in functionality for updating plugins. If you
+have `config.automatically_reload_config` set to true (the default), then the
+plugin _should_ be updated on startup and/or on saving your config. Otherwise,
+you could also set a keymap to trigger reloading the config and update plugins:
+
+>lua
+    wezterm.plugin.update_all()
+<
+
+You might find it helpful to be able to clear your config overrides, especially
+if there’s been a mistake in an override resulting in some internal Wezterm
+error or you just want to restore defaults. This is how you can setup a Wezterm
+keymap to do this:
+
+>lua
+    wezterm.on('clear-overrides', function(window, pane)
+        window:set_config_overrides({})
+        -- optionally have a small notification pop
+        -- the timeout is known to be unreliable
+        window:toast_notification('wezterm', 'config overrides cleared', nil, 2000)
+    
+    end)
+    
+    local override_keymap = {
+        key = 'X',
+        mods = 'CTRL|SHIFT',
+        action = wezterm.action.EmitEvent('clear-overrides')
+    }
+    
+    table.insert(config.keys, override_keymap)
+<
+
+
+TMUX ~
+
+The plugin should play nicely with tmux <https://github.com/tmux/tmux>. Make
+sure the following setting is in your tmux conf file, as advised by Wez
+<https://wezfurlong.org/wezterm/recipes/passing-data.html#user-vars>.
+
+>
+    set -g allow-passthrough on
+<
+
+Generated by panvimdoc <https://github.com/kdheepak/panvimdoc>
+
+vim:tw=78:ts=8:noet:ft=help:norl:
