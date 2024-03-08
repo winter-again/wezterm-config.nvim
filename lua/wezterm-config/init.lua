@@ -59,8 +59,6 @@ function M.set_wezterm_user_var(name, value)
     end
 
     local value_type = type(value)
-    -- hide_tab_bar_if_only_one_tab = false works (boolean)
-    -- font_size = 12.0 works (number)
     if value_type == 'boolean' or value_type == 'number' then
         value = tostring(value)
     elseif value_type == 'table' then
@@ -128,10 +126,9 @@ function M.set_wezterm_user_var(name, value)
     stdout:close()
 end
 
----Initialize plugin
+---Setup plugin
 ---@param config table | nil
 function M.setup(config)
-    -- keeping this for future use
     local default_config = {
         append_wezterm_to_rtp = false,
     }

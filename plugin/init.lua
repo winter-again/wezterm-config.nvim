@@ -1,3 +1,6 @@
+vim.keymap.set('n', '<leader><leader>1', function()
+    wezterm_config.set_wezterm_user_var('background', profile_data.background.default)
+end)
 -- TODO:
 -- simple workaround to avoid nvim trying to load this module
 -- https://github.com/wez/wezterm/issues/4533#issuecomment-1874094722
