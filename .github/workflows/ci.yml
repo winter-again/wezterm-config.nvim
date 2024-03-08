@@ -1,0 +1,33 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    name: pandoc to vimdoc
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: panvimdoc
+        uses: kdheepak/panvimdoc@main
+        with:
+          vimdoc: wezterm-config.nvim
+          pandoc: "README.md"
+          titledatepattern: "%Y %B %d"
+          treesitter: true # use treesitter for highlighting code blocks
+          shiftheadinglevelby: 0
+          incrementheadinglevelby: 0
+
+      - name: commit
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "chore(doc): autogenerate docs"
+          # using the [bot] needs updating project's workflow permissions to allow write
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
+          commit_author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          branch: ${{ github.head_ref }}
