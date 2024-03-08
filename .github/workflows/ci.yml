@@ -17,6 +17,7 @@ jobs:
         with:
           vimdoc: wezterm-config.nvim
           pandoc: "README.md"
+          version: "NVIM v0.9.0"
           titledatepattern: "%Y %B %d"
           treesitter: true # use treesitter for highlighting code blocks
           shiftheadinglevelby: 0
