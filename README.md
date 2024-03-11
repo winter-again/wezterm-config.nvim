@@ -65,7 +65,7 @@ end)
 
 For the more "complex" config options that take Lua tables as their values, the process is similar. To give an idea of what's possible, here's an example for overriding `config.background`:
 
-1. For convenience, create a collection of pre-defined "profile" data (just a Lua module). You can do something like `~/.config/wezterm/lua/profile_data.lua` and set the plugin option of `append_wezterm_to_rtp = true` if you want to keep all of your Wezterm-related stuff outside of your Neovim config. Otherwise, place it in your Neovim RTP. In this file, each element of `M.background` is a table that you're telling Wezterm to reference when setting the background config option. You can reference Wezterm's [docs](https://wezfurlong.org/wezterm/config/lua/config/background.html) to see how each *element* of `M.background` emulates what Wezterm's `config.background` expects.
+1. For convenience, create a collection of pre-defined "profile" data (just a Lua module). You can do something like `~/.config/wezterm/lua/profile_data.lua` and set the plugin option of `append_wezterm_to_rtp = true` if you want to keep all of your Wezterm-related stuff outside of your Neovim config. Otherwise, place it in your Neovim RTP (you can also just define the table when configuring the plugin). In this file, each element of `M.background` is a table that you're telling Wezterm to reference when setting the background config option. You can reference Wezterm's [docs](https://wezfurlong.org/wezterm/config/lua/config/background.html) to see how each *element* of `M.background` emulates what Wezterm's `config.background` expects.
 
 ```lua
 local M = {}
