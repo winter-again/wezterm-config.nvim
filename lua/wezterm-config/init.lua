@@ -66,7 +66,8 @@ function M.set_wezterm_user_var(name, value)
         --     value = value,
         -- })
         value_tbl = vim.json.encode(value)
-    elseif value_type == 'table' then
+    -- elseif value_type == 'table' then
+    else
         -- NOTE: remember that config.background is like { { source = { File = '...' } }, ... }
         -- looks like the outermost pair(s) of curly braces get converted/interpreted as array []
         -- by vim.json.encode()
