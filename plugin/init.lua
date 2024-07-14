@@ -35,27 +35,29 @@ end
 ---@param value string
 ---@return table
 function M.override_user_var(overrides, name, value)
-    -- returns tbl if successfully parsed
-    -- otherwise it returns 1 (?) so I guess an error code or at least
-    -- something with type == 'number'
+    if not M.is_shell_integ_user_var(name) then
+        -- returns tbl if successfully parsed
+        -- otherwise it returns 1 (?) so I guess an error code or at least
+        -- something with type == 'number'
 
-    -- local ok, parsed_val = pcall(wezterm.json_parse, value)
-    local parsed_val = wezterm.json_parse(value)
-    -- if type(parsed_val) == 'table' then
-    --     parsed_val = parsed_val.value
-    -- end
+        -- local ok, parsed_val = pcall(wezterm.json_parse, value)
+        local parsed_val = wezterm.json_parse(value)
+        -- if type(parsed_val) == 'table' then
+        --     parsed_val = parsed_val.value
+        -- end
 
-    if type(parsed_val) == 'table' then
-        overrides[name] = parsed_val
-    else
-        if parsed_val == 'true' or parsed_val == 'false' then
-            -- convert to bool
-            parsed_val = parsed_val == 'true'
-        elseif string.match(parsed_val, '^%d*%.?%d+$') then
-            -- convert to number
-            parsed_val = tonumber(parsed_val)
+        if type(parsed_val) == 'table' then
+            overrides[name] = parsed_val
+        else
+            if parsed_val == 'true' or parsed_val == 'false' then
+                -- convert to bool
+                parsed_val = parsed_val == 'true'
+            elseif string.match(parsed_val, '^%d*%.?%d+$') then
+                -- convert to number
+                parsed_val = tonumber(parsed_val)
+            end
+            overrides[name] = parsed_val
         end
-        overrides[name] = parsed_val
     end
     return overrides
 end
