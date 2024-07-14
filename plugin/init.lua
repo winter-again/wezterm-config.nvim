@@ -9,6 +9,23 @@ end
 local wezterm = require('wezterm')
 local M = {}
 
+---@param var string
+---@return boolean
+function M.is_shell_integ_user_var(var)
+    local shell_integ_user_vars = {
+        'WEZTERM_PROG',
+        'WEZTERM_USER',
+        'WEZTERM_HOST',
+        'WEZTERM_IN_TMUX',
+    }
+    for _, val in ipairs(shell_integ_user_vars) do
+        if val == var then
+            return true
+        end
+    end
+    return false
+end
+
 ---Interpret the Wezterm user var that is passed in and
 ---make the appropriate changes to the given overrides table;
 ---for use within a callback function in Wezterm config
@@ -21,18 +38,20 @@ function M.override_user_var(overrides, name, value)
     -- returns tbl if successfully parsed
     -- otherwise it returns 1 (?) so I guess an error code or at least
     -- something with type == 'number'
+
+    -- local ok, parsed_val = pcall(wezterm.json_parse, value)
     local parsed_val = wezterm.json_parse(value)
     if type(parsed_val) == 'table' then
-        overrides[name] = parsed_val
+        overrides[name] = parsed_val.value
     else
-        if value == 'true' or value == 'false' then
+        if parsed_val == 'true' or parsed_val == 'false' then
             -- convert to bool
-            value = value == 'true'
-        elseif string.match(value, '^%d*%.?%d+$') then
+            parsed_val = parsed_val == 'true'
+        elseif string.match(parsed_val, '^%d*%.?%d+$') then
             -- convert to number
-            value = tonumber(value)
+            parsed_val = tonumber(parsed_val)
         end
-        overrides[name] = value
+        overrides[name] = parsed_val
     end
     return overrides
 end
