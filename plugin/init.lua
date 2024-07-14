@@ -41,9 +41,9 @@ function M.override_user_var(overrides, name, value)
 
     -- local ok, parsed_val = pcall(wezterm.json_parse, value)
     local parsed_val = wezterm.json_parse(value)
-    if type(parsed_val) == 'table' then
-        parsed_val = parsed_val.value
-    end
+    -- if type(parsed_val) == 'table' then
+    --     parsed_val = parsed_val.value
+    -- end
 
     if type(parsed_val) == 'table' then
         overrides[name] = parsed_val
