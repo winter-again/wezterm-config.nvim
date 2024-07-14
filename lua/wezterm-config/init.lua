@@ -62,15 +62,17 @@ function M.set_wezterm_user_var(name, value)
     local value_tbl
     if value_type == 'boolean' or value_type == 'number' then
         value = tostring(value)
-        value_tbl = vim.json.encode({
-            value = value,
-        })
+        -- value_tbl = vim.json.encode({
+        --     value = value,
+        -- })
+        value_tbl = vim.json.encode(value)
     elseif value_type == 'table' then
         -- NOTE: remember that config.background is like { { source = { File = '...' } }, ... }
         -- looks like the outermost pair(s) of curly braces get converted/interpreted as array []
         -- by vim.json.encode()
         -- actually it seems to work without the gsub...
-        value_tbl = vim.json.encode({ value = value })
+        -- value_tbl = vim.json.encode({ value = value })
+        value_tbl = vim.json.encode(value)
         -- value = string.gsub(value, '[%[%]]', '')
     end
 
