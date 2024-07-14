@@ -74,8 +74,6 @@ function M.set_wezterm_user_var(name, value)
         -- value = string.gsub(value, '[%[%]]', '')
     end
 
-    P(value_tbl)
-
     -- NOTE: v0.10 adds vim.version.ge() and vim.version.le() so shouldn't use it yet since v0.10 isn't out
     -- NOTE: v0.10 renames vim.loop to vim.uv and vim.base64 module is added
     -- https://neovim.io/doc/user/news.html
