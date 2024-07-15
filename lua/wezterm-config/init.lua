@@ -59,22 +59,14 @@ function M.set_wezterm_user_var(name, value)
     end
 
     local value_type = type(value)
-    local value_tbl
+    local value_out
     if value_type == 'boolean' or value_type == 'number' then
-        value = tostring(value)
-        -- value_tbl = vim.json.encode({
-        --     value = value,
-        -- })
-        value_tbl = vim.json.encode(value)
-    -- elseif value_type == 'table' then
+        value_out = vim.json.encode(tostring(value))
     else
         -- NOTE: remember that config.background is like { { source = { File = '...' } }, ... }
         -- looks like the outermost pair(s) of curly braces get converted/interpreted as array []
         -- by vim.json.encode()
-        -- actually it seems to work without the gsub...
-        -- value_tbl = vim.json.encode({ value = value })
-        value_tbl = vim.json.encode(value)
-        -- value = string.gsub(value, '[%[%]]', '')
+        value_out = vim.json.encode(value)
     end
 
     -- NOTE: v0.10 adds vim.version.ge() and vim.version.le() so shouldn't use it yet since v0.10 isn't out
@@ -112,7 +104,7 @@ function M.set_wezterm_user_var(name, value)
     end
 
     local stdout = uv.new_tty(1, false)
-    local value_b64_enc = base64.encode(value_tbl)
+    local value_b64_enc = base64.encode(value_out)
 
     -- people have asked Wez about stuff like this before, to which he's linked
     -- https://wezfurlong.org/wezterm/recipes/passing-data.html
