@@ -11,7 +11,7 @@ local M = {}
 
 ---@param var string
 ---@return boolean
-function M.is_shell_integ_user_var(var)
+local function is_shell_integ_user_var(var)
     local shell_integ_user_vars = {
         'WEZTERM_PROG',
         'WEZTERM_USER',
@@ -35,7 +35,7 @@ end
 ---@param value string
 ---@return table
 function M.override_user_var(overrides, name, value)
-    if not M.is_shell_integ_user_var(name) then
+    if not is_shell_integ_user_var(name) then
         -- returns tbl if successfully parsed
         -- otherwise it returns 1 (?) so I guess an error code or at least
         -- something with type == 'number'
