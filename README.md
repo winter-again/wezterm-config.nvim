@@ -1,8 +1,5 @@
 # wezterm-config.nvim
 
-> [!NOTE]
-> I've made some breaking changes to the plugin. Notably, the plugin is now capable of sending raw Lua tables to Wezterm to override config options like the background. You no longer need to create a special Lua module and append "profile_" to the user var name. Read the instructions below to update your setup.
-
 Neovim and [Wezterm](https://github.com/wez/wezterm) feel like the perfect match. 
 
 Use this plugin to send Wezterm config overrides from within Neovim. This repo doubles as the source of both the Neovim plugin (`lua/wezterm-config/`) and the Wezterm plugin (`plugin/`). 
