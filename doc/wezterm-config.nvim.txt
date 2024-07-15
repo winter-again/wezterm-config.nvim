@@ -10,12 +10,6 @@ Table of Contents                      *wezterm-config.nvim-table-of-contents*
 ==============================================================================
 1. wezterm-config.nvim               *wezterm-config.nvim-wezterm-config.nvim*
 
-
-  [!NOTE] I’ve made some breaking changes to the plugin. Notably, the plugin is
-  now capable of sending raw Lua tables to Wezterm to override config options
-  like the background. You no longer need to create a special Lua module and
-  append "profile_" to the user var name. Read the instructions below to update
-  your setup.
 Neovim and Wezterm <https://github.com/wez/wezterm> feel like the perfect
 match.
 
