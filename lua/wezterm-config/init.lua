@@ -2,14 +2,14 @@ local M = {}
 
 ---For testing purposes only
 function M.__test_bg_override()
-    local name = 'background'
+    local name = "background"
     local value = {
         {
             source = {
-                Color = '#16161e',
+                Color = "#16161e",
             },
-            width = '100%',
-            height = '100%',
+            width = "100%",
+            height = "100%",
             opacity = 1.0,
         },
     }
@@ -35,16 +35,16 @@ function M.__test_bg_override()
     if vim.base64 then
         base64 = vim.base64
     else
-        base64 = require('wezterm-config.base64_encode')
+        base64 = require("wezterm-config.base64_encode")
     end
     local stdout = uv.new_tty(1, false)
     local value_b64_enc = base64.encode(value)
 
     local esc_seq
-    if os.getenv('TMUX') then
-        esc_seq = '\x1bPtmux;\x1b\x1b]1337;SetUserVar=%s=%s\007\x1b\\'
+    if os.getenv("TMUX") then
+        esc_seq = "\x1bPtmux;\x1b\x1b]1337;SetUserVar=%s=%s\007\x1b\\"
     else
-        esc_seq = '\x1b]1337;SetUserVar=%s=%s\007'
+        esc_seq = "\x1b]1337;SetUserVar=%s=%s\007"
     end
     stdout:write(esc_seq:format(name, value_b64_enc))
     stdout:close()
@@ -54,13 +54,13 @@ end
 ---@param name string
 ---@param value string | boolean | number | table | nil
 function M.set_wezterm_user_var(name, value)
-    if type(name) ~= 'string' then
+    if type(name) ~= "string" then
         error("User var's name should be a string")
     end
 
     local value_type = type(value)
     local value_out
-    if value_type == 'boolean' or value_type == 'number' then
+    if value_type == "boolean" or value_type == "number" then
         value_out = vim.json.encode(tostring(value))
     else
         -- NOTE: remember that config.background is like { { source = { File = '...' } }, ... }
@@ -100,7 +100,7 @@ function M.set_wezterm_user_var(name, value)
         base64 = vim.base64
     else
         uv = vim.loop
-        base64 = require('wezterm-config.base64_encode')
+        base64 = require("wezterm-config.base64_encode")
     end
 
     local stdout = uv.new_tty(1, false)
@@ -113,13 +113,13 @@ function M.set_wezterm_user_var(name, value)
     -- https://www.reddit.com/r/neovim/comments/xn1q75/how_to_use_chansend/
     -- Folke has kindly allowed me to adapt the code here
     local esc_seq
-    if os.getenv('TMUX') then
+    if os.getenv("TMUX") then
         -- unclear to me why using \033 isn't interpreted the same as \x1b
         -- there are some files in nvim that seem like they could explain or have
         -- something to do with nvim-specific interpretation, but I don't understand them
-        esc_seq = '\x1bPtmux;\x1b\x1b]1337;SetUserVar=%s=%s\007\x1b\\'
+        esc_seq = "\x1bPtmux;\x1b\x1b]1337;SetUserVar=%s=%s\007\x1b\\"
     else
-        esc_seq = '\x1b]1337;SetUserVar=%s=%s\007'
+        esc_seq = "\x1b]1337;SetUserVar=%s=%s\007"
     end
     stdout:write(esc_seq:format(name, value_b64_enc))
     stdout:close()
@@ -131,11 +131,11 @@ function M.setup(config)
     local default_config = {
         append_wezterm_to_rtp = false,
     }
-    M.config = vim.tbl_deep_extend('force', default_config, config or {})
+    M.config = vim.tbl_deep_extend("force", default_config, config or {})
 
     if M.config.append_wezterm_to_rtp == true then
         -- vim.fn.stdpath('config') is typically $HOME/.config/nvim
-        local wezterm_config = vim.fn.stdpath('config'):gsub('nvim', 'wezterm')
+        local wezterm_config = vim.fn.stdpath("config"):gsub("nvim", "wezterm")
         vim.opt.rtp:append(wezterm_config)
     end
 end
