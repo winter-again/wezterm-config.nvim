@@ -39,10 +39,13 @@ function M.override_user_var(overrides, name, value)
         -- returns tbl if successfully parsed
         -- otherwise it returns 1 (?) so I guess an error code or at least
         -- something with type == 'number'
-        if name == 'font' then
-            overrides.font = value
-            return overrides
-        end
+
+        -- TODO: this seems to be the fix needed for font override; assumes that value
+        -- is output from wezterm.font()
+        -- if name == 'font' then
+        --     overrides.font = value
+        --     return overrides
+        -- end
 
         local parsed_val = wezterm.json_parse(value)
         if type(parsed_val) == 'table' then
