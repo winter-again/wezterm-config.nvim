@@ -2,11 +2,11 @@
 -- simple workaround to avoid nvim trying to load this module
 -- https://github.com/wez/wezterm/issues/4533#issuecomment-1874094722
 -- is there a better alt?
-if vim ~= nil then
+if vim then
     return
 end
 
-local wezterm = require('wezterm')
+local wezterm = require('wezterm') ---@type Wezterm
 local M = {}
 
 ---@param var string
@@ -30,10 +30,10 @@ end
 ---make the appropriate changes to the given overrides table;
 ---for use within a callback function in Wezterm config
 ---for the 'user-var-changed' event
----@param overrides table
+---@param overrides table<string, boolean|string|number|table>
 ---@param name string
 ---@param value string
----@return table
+---@return table<string, boolean|string|number|table> overrides
 function M.override_user_var(overrides, name, value)
     if not is_shell_integ_user_var(name) then
         -- returns tbl if successfully parsed
@@ -49,17 +49,20 @@ function M.override_user_var(overrides, name, value)
 
         local parsed_val = wezterm.json_parse(value)
         if type(parsed_val) == 'table' then
+            ---@cast parsed_val table
             overrides[name] = parsed_val
         else
+            ---@cast parsed_val string
             if parsed_val == 'true' or parsed_val == 'false' then
                 -- convert to bool
                 parsed_val = parsed_val == 'true'
-            elseif string.match(parsed_val, '^%d*%.?%d+$') then
+            elseif parsed_val:match('^%d*%.?%d+$') then
                 -- convert to number
                 parsed_val = tonumber(parsed_val)
             end
             overrides[name] = parsed_val
         end
+        overrides[name] = parsed_val
     end
     return overrides
 end
