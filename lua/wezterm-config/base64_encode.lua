@@ -1,13 +1,17 @@
 -- using relevant pieces of Ilya Kolbin's https://github.com/iskolbin/lbase64 under public domain
 -- using Lua 5.1
 
+---@class WeztermConfig.Base64Encode
 local base64 = {}
 
+---@param v integer
+---@param from integer
+---@param width integer
 local function extract(v, from, width)
     local w = 0
     local flag = 2 ^ from
     for i = 0, width - 1 do
-        local flag2 = flag + flag
+        local flag2 = flag * 2
         if v % flag2 >= flag then
             w = w + 2 ^ i
         end
@@ -16,10 +20,13 @@ local function extract(v, from, width)
     return w
 end
 
+---@param s62? string
+---@param s63? string
+---@param spad? string
+---@return table<integer, integer> enocoder
 function base64.makeencoder(s62, s63, spad)
-    local encoder = {}
-    for b64code, char in pairs({
-        [0] = 'A',
+    local characters = {
+        'A',
         'B',
         'C',
         'D',
@@ -84,8 +91,10 @@ function base64.makeencoder(s62, s63, spad)
         s62 or '+',
         s63 or '/',
         spad or '=',
-    }) do
-        encoder[b64code] = char:byte()
+    }
+    local encoder = {} ---@type table<integer, integer>
+    for b64code, char in ipairs(characters) do
+        encoder[b64code - 1] = char:byte()
     end
     return encoder
 end
@@ -93,11 +102,14 @@ end
 local DEFAULT_ENCODER = base64.makeencoder()
 local char, concat = string.char, table.concat
 
+---@param str string
+---@param encoder? table<integer, integer>
+---@param usecaching? boolean
 function base64.encode(str, encoder, usecaching)
     encoder = encoder or DEFAULT_ENCODER
-    local t, k, n = {}, 1, #str
-    local lastn = n % 3
-    local cache = {}
+    local t, k, n = {}, 1, str:len() ---@type string[], integer, integer
+    local lastn = n % 3 ---@type integer
+    local cache = {} ---@type table<integer, string>
     for i = 1, n - lastn, 3 do
         local a, b, c = str:byte(i, i + 2)
         local v = a * 0x10000 + b * 0x100 + c
